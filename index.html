@@ -36,17 +36,24 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', 'Kalpurush', sans-serif; -webkit-tap-highlight-color: transparent; }
         
+        /* ব্রাউজার স্ক্রলিং ফিক্স */
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            position: fixed; /* মোবাইলে বাউন্স স্ক্রল বন্ধ করবে */
+        }
+
         body { 
             background: var(--bg-color); 
             background-attachment: fixed;
             background-size: cover;
             color: var(--text); 
-            height: 100vh; 
-            overflow: hidden; 
             transition: background 0.3s ease, color 0.3s; 
         }
 
-        .app-container { height: 100vh; display: flex; flex-direction: column; padding-bottom: 75px; }
+        /* কন্টেইনার আপডেট */
+        .app-container { height: 100%; display: flex; flex-direction: column; padding-bottom: 75px; width: 100%; }
 
         /* সলিড কার্ড ডিজাইন */
         .card-panel {
@@ -61,8 +68,8 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
         }
 
-        /* হেডার */
-        .app-header { padding: 10px 15px; z-index: 100; border-radius: 0 0 16px 16px; border-top: none; }
+        /* হেডার ফিক্স - flex-shrink: 0 যুক্ত করা হয়েছে */
+        .app-header { padding: 10px 15px; z-index: 100; border-radius: 0 0 16px 16px; border-top: none; flex-shrink: 0; }
 
         /* কোরআন/হাদিস বক্স */
         .quote-container { background: var(--input-bg); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; gap: 8px; align-items: center; transition: 0.3s; }
@@ -71,8 +78,8 @@
         .quote-text { font-size: 11px; color: var(--text); font-weight: 600; display: inline; }
         .quote-ref { font-size: 9px; color: var(--primary); font-weight: bold; display: inline; margin-left: 4px; }
 
-        /* ট্যাব এরিয়া */
-        .tab-content { display: none; flex: 1; overflow-y: auto; padding-top: 8px; transition: 0.3s; }
+        /* ট্যাব এরিয়া ফিক্স - min-height: 0 যুক্ত করা হয়েছে */
+        .tab-content { display: none; flex: 1; overflow-y: auto; padding-top: 8px; transition: 0.3s; min-height: 0; }
         .tab-content.active { display: block; animation: fadeIn 0.2s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
@@ -478,7 +485,7 @@
     </div>
 </div>
 
-<!-- কাস্টম হুইল টাইম পিকার (সম্পূর্ণ আপডেটেড) -->
+<!-- কাস্টম হুইল টাইম পিকার -->
 <div class="tp-modal" id="tp-modal">
     <div class="tp-container">
         <div class="tp-header">
@@ -1067,7 +1074,7 @@
             let sortedCats = Object.keys(monthlyCatTotals).sort((a,b) => monthlyCatTotals[b] - monthlyCatTotals[a]);
             topCatHtml = sortedCats.slice(0, 3).map(c => `<b>${c}:</b> ${fmtD(monthlyCatTotals[c])}`).join(' | ');
         } else {
-            topCatHtml = 'কোনো রেকর্ড পাওয়া যায়নি';
+            topCatHtml = 'কোনো রেকর্ড পাওয়া মিলিবে না';
         }
 
         let today = new Date();
