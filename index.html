@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>২৪ঘ স্মার্ট রুটিন ট্র্যাকার প্রো</title>
+    <title>ডাইরি নোট</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* সলিড থিম ভেরিয়েবলস (লাইট মোড) */
@@ -160,10 +160,11 @@
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .tp-header { display: flex; justify-content: space-between; align-items: center; padding: 0 15px 20px 15px; }
         .tp-header button { font-size: 26px; cursor: pointer; border: none; background: transparent; transition: 0.2s; }
-        .tp-wheels { height: 160px; display: flex; position: relative; justify-content: center; mask-image: linear-gradient(to bottom, transparent, black 40%, black 60%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%, black 70%, transparent); }
-        .tp-wheel { flex: 1; height: 160px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; padding: 60px 0; -ms-overflow-style: none; }
+        
+        .tp-wheels { height: 160px; display: flex; position: relative; justify-content: center; mask-image: linear-gradient(to bottom, transparent, black 40%, black 60%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 40%, black 60%, transparent); }
+        .tp-wheel { flex: 1; height: 160px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; }
         .tp-wheel::-webkit-scrollbar { display: none; }
-        .tp-item { height: 40px; line-height: 40px; font-size: 20px; color: var(--text-muted); opacity: 0.4; text-align: center; scroll-snap-align: center; transition: 0.2s; font-weight: 500;}
+        .tp-item { height: 40px; line-height: 40px; font-size: 20px; color: var(--text-muted); opacity: 0.4; text-align: center; scroll-snap-align: center; transition: 0.2s; font-weight: 500; cursor: pointer; user-select: none;}
         .tp-item.active { color: var(--text); font-size: 24px; font-weight: bold; opacity: 1; }
         .tp-overlay { position: absolute; top: 60px; left: 5%; right: 5%; height: 40px; border-top: 1.5px solid var(--border-color); border-bottom: 1.5px solid var(--border-color); pointer-events: none; }
 
@@ -477,7 +478,7 @@
     </div>
 </div>
 
-<!-- কাস্টম হুইল টাইম পিকার -->
+<!-- কাস্টম হুইল টাইম পিকার (সম্পূর্ণ আপডেটেড) -->
 <div class="tp-modal" id="tp-modal">
     <div class="tp-container">
         <div class="tp-header">
@@ -612,18 +613,31 @@
     
     function initWheel(id, start, end, formatFn) {
         let h = document.getElementById(id); h.innerHTML = '';
+        let s1 = document.createElement('div'); s1.style.height = '60px'; h.appendChild(s1);
         for(let i=start; i<=end; i++){
             let div = document.createElement('div');
             div.className = 'tp-item'; div.innerText = formatFn(i); div.dataset.val = i;
+            div.onclick = () => { h.scrollTop = (i - start) * 40; };
             h.appendChild(div);
         }
+        let s2 = document.createElement('div'); s2.style.height = '60px'; h.appendChild(s2);
     }
 
     function setupWheels() {
         initWheel('wheel-h', 1, 12, i => toBn(i));
         initWheel('wheel-m', 0, 59, i => toBn(String(i).padStart(2, '0')));
+        
         let wa = document.getElementById('wheel-a');
-        wa.innerHTML = '<div class="tp-item" data-val="AM">AM</div><div class="tp-item" data-val="PM">PM</div>';
+        wa.innerHTML = '';
+        let s1 = document.createElement('div'); s1.style.height = '60px'; wa.appendChild(s1);
+        
+        let am = document.createElement('div'); am.className = 'tp-item'; am.innerText = 'AM'; am.dataset.val = 'AM'; 
+        am.onclick = () => wa.scrollTop = 0; wa.appendChild(am);
+        
+        let pm = document.createElement('div'); pm.className = 'tp-item'; pm.innerText = 'PM'; pm.dataset.val = 'PM'; 
+        pm.onclick = () => wa.scrollTop = 40; wa.appendChild(pm);
+        
+        let s2 = document.createElement('div'); s2.style.height = '60px'; wa.appendChild(s2);
     }
 
     function updateWheelActive(id) {
@@ -655,23 +669,32 @@
         }
 
         setTimeout(() => {
-            document.getElementById('wheel-h').scrollTop = (h - 1) * 40;
-            document.getElementById('wheel-m').scrollTop = m * 40;
-            document.getElementById('wheel-a').scrollTop = a === 'AM' ? 0 : 40;
-            updateWheelActive('wheel-h'); updateWheelActive('wheel-m'); updateWheelActive('wheel-a');
+            let wheelH = document.getElementById('wheel-h');
+            let wheelM = document.getElementById('wheel-m');
+            let wheelA = document.getElementById('wheel-a');
+            
+            wheelH.scrollTop = (h - 1) * 40;
+            wheelM.scrollTop = m * 40;
+            wheelA.scrollTop = a === 'AM' ? 0 : 40;
+            
+            updateWheelActive('wheel-h'); 
+            updateWheelActive('wheel-m'); 
+            updateWheelActive('wheel-a');
         }, 10);
     }
 
     function closeTimePicker(save) {
         document.getElementById('tp-modal').style.display = 'none';
         if(save && currentTargetTime) {
-            let hIndex = Math.round(document.getElementById('wheel-h').scrollTop / 40);
-            let mIndex = Math.round(document.getElementById('wheel-m').scrollTop / 40);
-            let aIndex = Math.round(document.getElementById('wheel-a').scrollTop / 40);
+            let activeH = document.querySelector('#wheel-h .tp-item.active');
+            let activeM = document.querySelector('#wheel-m .tp-item.active');
+            let activeA = document.querySelector('#wheel-a .tp-item.active');
             
-            let valH = hIndex + 1;
-            let valM = mIndex;
-            let valA = aIndex === 0 ? 'AM' : 'PM';
+            if(!activeH || !activeM || !activeA) return; 
+            
+            let valH = parseInt(activeH.dataset.val);
+            let valM = parseInt(activeM.dataset.val);
+            let valA = activeA.dataset.val;
             
             let h24 = valH;
             if(valA === 'PM' && valH !== 12) h24 += 12;
@@ -700,8 +723,9 @@
         if(last) {
             updateTimeDisplay('start', last.eRaw);
         } else {
-            document.getElementById('start-t').value = "";
-            document.getElementById('disp-start-t').innerText = "--:--";
+            let now = new Date();
+            let currentStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+            updateTimeDisplay('start', currentStr);
         }
         
         document.getElementById('end-t').value = "";
@@ -1029,7 +1053,6 @@
         const monthNames = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
         let monthName = monthNames[parseInt(m)-1] + " " + toBn(y);
 
-        // ক্যালকুলেশন (সামারির জন্য)
         let monthlyGrandTotal = 0;
         let monthlyCatTotals = {};
         db.forEach(t => {
@@ -1039,7 +1062,6 @@
             }
         });
 
-        // সেরা ৩ ক্যাটাগরি বের করা
         let topCatHtml = '';
         if (monthlyGrandTotal > 0) {
             let sortedCats = Object.keys(monthlyCatTotals).sort((a,b) => monthlyCatTotals[b] - monthlyCatTotals[a]);
@@ -1053,7 +1075,7 @@
 
         let printHtml = `
             <div class="print-header-container">
-                <div class="print-org-name">স্মার্ট রুটিন ট্র্যাকার প্রো</div>
+                <div class="print-org-name">ডাইরি নোট</div>
                 <h2 class="print-title">মাসিক কাজের মূল্যায়ন প্রতিবেদন</h2>
                 <div class="print-meta">
                     <span><b>প্রতিবেদনের মাস:</b> ${monthName}</span>
@@ -1098,7 +1120,7 @@
             </div>
             
             <div class="print-footer-note">
-                © সিস্টেম জেনারেটেড রিপোর্ট — স্মার্ট রুটিন ট্র্যাকার প্রো
+                © সিস্টেম জেনারেটেড রিপোর্ট — ডাইরি নোট
             </div>
         `;
         
