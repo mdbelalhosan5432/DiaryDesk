@@ -38,7 +38,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', 'Kalpurush', sans-serif; -webkit-tap-highlight-color: transparent; }
-        
+
         /* ব্রাউজার স্ক্রলিং ফিক্স (শুধু স্ক্রিনের জন্য) */
         html, body {
             height: 100%;
@@ -93,7 +93,7 @@
         .card-table-wrap::-webkit-scrollbar { width: 4px; height: 4px; }
         .card-table-wrap::-webkit-scrollbar-track { background: transparent; }
         .card-table-wrap::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 10px; }
-        
+
         .scroll-indicator { text-align: center; font-size: 10px; color: var(--primary); padding: 6px 0; background: var(--th-bg); border-top: 1px solid var(--border-color); font-weight: bold; display: none; box-shadow: 0 -3px 6px rgba(0,0,0,0.02); z-index: 5; position: relative; }
 
         table { width: 100%; border-collapse: collapse; transition: 0.3s; }
@@ -130,13 +130,13 @@
         .modal-card { width: 92%; max-width: 400px; padding: 20px; position: relative; transition: 0.3s; }
         .input-box { margin-bottom: 12px; }
         .input-box label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 4px; color: var(--text-muted); }
-        .input-box input, .input-box select, #history-date, #new-cat-name { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--input-bg); color: var(--text); outline: none; font-size: 13px; transition: 0.3s; }
-        .input-box input:focus, .input-box select:focus, #history-date:focus, #new-cat-name:focus { border-color: var(--primary); }
-        
+        .input-box input, .input-box select, #history-date, #new-cat-name, #task-date { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--input-bg); color: var(--text); outline: none; font-size: 13px; transition: 0.3s; }
+        .input-box input:focus, .input-box select:focus, #history-date:focus, #new-cat-name:focus, #task-date:focus { border-color: var(--primary); }
+
         .quick-times { display: flex; gap: 6px; margin-bottom: 12px; justify-content: center; flex-wrap: wrap; }
         .qt-btn { background: var(--input-bg); color: var(--primary); border: 1px solid var(--border-color); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .qt-btn:active { transform: scale(0.9); background: var(--primary); color: white; border-color: var(--primary); }
-        
+
         .btn-main { background: var(--primary); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 15px; margin-top: 5px; cursor: pointer; box-shadow: 0 4px 10px rgba(67,97,238,0.3);}
 
         .nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; display: flex; transition: 0.3s; z-index: 100; border-radius: 16px 16px 0 0; background: var(--card-bg); border-top: 1px solid var(--border-color); box-shadow: 0 -2px 10px rgba(0,0,0,0.05);}
@@ -147,10 +147,10 @@
         .nav-btn span { font-size: 10px; font-weight: bold; }
 
         #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: white; padding: 10px 20px; border-radius: 30px; font-size: 12px; z-index: 2000; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
-        
+
         .dev-social { transition: 0.3s; transform: scale(1); }
         .dev-social:active { transform: scale(0.9); }
-        
+
         .scroll-inline { white-space: nowrap; overflow-x: auto; padding-bottom: 4px; display: block; }
         .scroll-inline::-webkit-scrollbar { height: 3px; }
         .scroll-inline::-webkit-scrollbar-track { background: transparent; }
@@ -163,7 +163,7 @@
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
         .tp-header { display: flex; justify-content: space-between; align-items: center; padding: 0 15px 20px 15px; }
         .tp-header button { font-size: 26px; cursor: pointer; border: none; background: transparent; transition: 0.2s; }
-        
+
         .tp-wheels { height: 160px; display: flex; position: relative; justify-content: center; mask-image: linear-gradient(to bottom, transparent, black 40%, black 60%, transparent); -webkit-mask-image: linear-gradient(to bottom, transparent, black 40%, black 60%, transparent); }
         .tp-wheel { flex: 1; height: 160px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; -ms-overflow-style: none; scroll-behavior: smooth; }
         .tp-wheel::-webkit-scrollbar { display: none; }
@@ -181,11 +181,11 @@
                 position: static !important;
                 background: #fff !important;
             }
-            
+
             body * { visibility: hidden; }
             #print-area, #print-area * { visibility: visible; }
             #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000 !important; background: #fff !important; padding: 0; margin: 0; font-family: 'Kalpurush', sans-serif; box-sizing: border-box; }
-            
+
             .print-header-container { text-align: center; margin-bottom: 25px; border-bottom: 2px solid #2c3e50; padding-bottom: 15px; }
             .print-org-name { font-size: 18px; font-weight: bold; color: #555 !important; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;}
             .print-title { font-size: 24px; font-weight: bold; margin: 0 0 10px 0; color: #000 !important; }
@@ -243,7 +243,7 @@
             </div>
             <div style="text-align:center; font-size:9px; color:var(--text-muted); margin-top:8px;">* হিসাবটি ভোর ৪টা থেকে পরবর্তী দিন ভোর ৪টা পর্যন্ত।</div>
         </div>
-        
+
         <div class="card-panel" style="margin: 0 10px; overflow: hidden; display: flex; flex-direction: column;">
             <div class="card-table-wrap" style="max-height: 40vh; padding: 0;">
                 <table>
@@ -285,7 +285,7 @@
                 <div class="chart-box" id="box-summary"><canvas id="chart-summary"></canvas></div>
             </div>
         </div>
-        
+
         <div class="db-card card-panel">
             <div class="db-title">সাপ্তাহিক গড় ট্র্যাকার</div>
             <div class="db-content">
@@ -349,7 +349,7 @@
             <input type="date" id="history-date">
             <button onclick="renderHistory()" style="background:var(--primary); color:white; border:none; padding:0 15px; border-radius:8px; font-weight:bold; font-size:13px; cursor:pointer; box-shadow: 0 4px 10px rgba(67,97,238,0.2);">সার্চ</button>
         </div>
-        
+
         <div class="card-panel" style="overflow: hidden; display: flex; flex-direction: column;">
             <div class="card-table-wrap" style="max-height: 45vh; padding: 0;">
                 <table>
@@ -381,7 +381,7 @@
 
     <main id="tab-settings" class="tab-content" style="padding: 10px; padding-bottom: 90px;">
         <div class="db-title card-panel" style="margin-bottom:10px; border-radius:8px;">অ্যাপ সেটিংস</div>
-        
+
         <div class="db-card card-panel" style="margin: 0 0 15px 0;">
             <div style="padding: 12px 15px; font-size: 13px; font-weight: bold; border-bottom: 1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
                 ক্লাউড ব্যাকআপ
@@ -407,7 +407,7 @@
             <div style="padding: 20px 15px; text-align: center;">
                 <div style="font-size: 18px; font-weight: bold; color: var(--text);">মোঃ বেলাল হোসেন</div>
                 <div style="font-size: 13px; color: var(--primary); font-weight: bold; margin-bottom: 20px;">ছাত্র</div>
-                
+
                 <div style="display: flex; gap: 20px; justify-content: center;">
                     <a href="mailto:mdbelalhosen5432@gmail.com" class="dev-social" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px;">
                         <div style="width: 45px; height: 45px; background: rgba(234, 67, 53, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(234, 67, 53, 0.3);">
@@ -415,7 +415,7 @@
                         </div>
                         <span style="font-size: 10px; font-weight: bold; color: var(--text);">ইমেইল</span>
                     </a>
-                    
+
                     <a href="https://wa.me/8801518951512" target="_blank" class="dev-social" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px;">
                         <div style="width: 45px; height: 45px; background: rgba(37, 211, 102, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(37, 211, 102, 0.3);">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="#25D366">
@@ -424,7 +424,7 @@
                         </div>
                         <span style="font-size: 10px; font-weight: bold; color: var(--text);">হোয়াটসঅ্যাপ</span>
                     </a>
-                    
+
                     <a href="https://t.me/BelalHosenDesk" target="_blank" class="dev-social" style="text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px;">
                         <div style="width: 45px; height: 45px; background: rgba(0, 136, 204, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 136, 204, 0.3);">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="#0088cc"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.188-2.85 5.18-4.686c.223-.198-.054-.31-.346-.116l-6.405 4.034-2.76-.86c-.6-.188-.614-.6.125-.89l10.785-4.156c.5-.188.94.103.774.83z"/></svg>
@@ -446,7 +446,12 @@
         <button onclick="closeModal()" style="position:absolute; top:12px; right:15px; background:none; border:none; font-size:24px; color:var(--text-muted); cursor:pointer;">&times;</button>
         <h3 id="form-title" style="margin-bottom:15px; color:var(--primary); font-size: 16px;">কাজ যোগ করুন</h3>
         <input type="hidden" id="edit-id">
-        
+
+        <div class="input-box" style="margin-bottom: 12px;">
+            <label>তারিখ</label>
+            <input type="date" id="task-date">
+        </div>
+
         <div style="display:flex; gap:10px;">
             <div class="input-box" style="flex:1;">
                 <label>শুরুর সময়</label>
@@ -459,7 +464,7 @@
                 <input type="hidden" id="end-t">
             </div>
         </div>
-        
+
         <div class="quick-times">
             <button class="qt-btn" onclick="addQuickTime(15)">+১৫মি</button>
             <button class="qt-btn" onclick="addQuickTime(30)">+৩০মি</button>
@@ -490,7 +495,6 @@
     </div>
 </div>
 
-<!-- কাস্টম হুইল টাইম পিকার -->
 <div class="tp-modal" id="tp-modal">
     <div class="tp-container">
         <div class="tp-header">
@@ -507,7 +511,6 @@
     </div>
 </div>
 
-<!-- প্রিন্ট এরিয়া -->
 <div id="print-area"></div>
 
 <nav class="nav">
@@ -525,7 +528,6 @@
     </button>
 </nav>
 
-<!-- মেইন ফাংশনালিটি স্ক্রিপ্ট -->
 <script>
     let db = JSON.parse(localStorage.getItem('smart_routine_v2')) || [];
     let cats = JSON.parse(localStorage.getItem('cats_v2')) || ["ইবাদত", "ঘুম", "পড়াশোনা", "খাবার", "কাজ"];
@@ -538,11 +540,11 @@
         document.body.classList.add(theme + '-mode');
         localStorage.setItem('theme_v2', theme);
         currentTheme = theme;
-        
+
         document.querySelectorAll('.btn-theme').forEach(b => b.classList.remove('active'));
         if(document.getElementById('theme-' + theme)) document.getElementById('theme-' + theme).classList.add('active');
     }
-    
+
     function setTheme(theme) { applyTheme(theme); showToast("থিম পরিবর্তন হয়েছে!"); }
 
     const pencilIco = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>`;
@@ -566,7 +568,7 @@
         let year = dateObj.getFullYear(), month = String(dateObj.getMonth() + 1).padStart(2, '0'), day = String(dateObj.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
-    
+
     function getMinsFrom4AM(t) {
         let [h, m] = t.split(':').map(Number);
         return h < 4 ? (h + 20) * 60 + m : (h - 4) * 60 + m;
@@ -583,7 +585,7 @@
     function renderCats() { let s=document.getElementById('task-cat'); s.innerHTML=cats.map(c=>`<option value="${c}">${c}</option>`).join(''); }
     function manageCats() { document.getElementById('modal-category').style.display = 'flex'; renderCatList(); }
     function closeCatModal() { document.getElementById('modal-category').style.display = 'none'; renderCats(); }
-    
+
     function renderCatList() {
         let list = document.getElementById('cat-list'); list.innerHTML = "";
         cats.forEach((c, i) => {
@@ -622,7 +624,7 @@
 
     /* --- কাস্টম টাইম পিকার ফাংশনালিটি --- */
     let currentTargetTime = null;
-    
+
     function initWheel(id, start, end, formatFn) {
         let h = document.getElementById(id); h.innerHTML = '';
         let s1 = document.createElement('div'); s1.style.height = '60px'; h.appendChild(s1);
@@ -638,17 +640,17 @@
     function setupWheels() {
         initWheel('wheel-h', 1, 12, i => toBn(i));
         initWheel('wheel-m', 0, 59, i => toBn(String(i).padStart(2, '0')));
-        
+
         let wa = document.getElementById('wheel-a');
         wa.innerHTML = '';
         let s1 = document.createElement('div'); s1.style.height = '60px'; wa.appendChild(s1);
-        
+
         let am = document.createElement('div'); am.className = 'tp-item'; am.innerText = 'AM'; am.dataset.val = 'AM'; 
         am.onclick = () => wa.scrollTop = 0; wa.appendChild(am);
-        
+
         let pm = document.createElement('div'); pm.className = 'tp-item'; pm.innerText = 'PM'; pm.dataset.val = 'PM'; 
         pm.onclick = () => wa.scrollTop = 40; wa.appendChild(pm);
-        
+
         let s2 = document.createElement('div'); s2.style.height = '60px'; wa.appendChild(s2);
     }
 
@@ -666,7 +668,7 @@
         currentTargetTime = target;
         document.getElementById('tp-modal').style.display = 'flex';
         let val = document.getElementById(target + '-t').value;
-        
+
         let h=12, m=0, a="AM";
         if(val) {
             let parts = val.split(':').map(Number);
@@ -684,11 +686,11 @@
             let wheelH = document.getElementById('wheel-h');
             let wheelM = document.getElementById('wheel-m');
             let wheelA = document.getElementById('wheel-a');
-            
+
             wheelH.scrollTop = (h - 1) * 40;
             wheelM.scrollTop = m * 40;
             wheelA.scrollTop = a === 'AM' ? 0 : 40;
-            
+
             updateWheelActive('wheel-h'); 
             updateWheelActive('wheel-m'); 
             updateWheelActive('wheel-a');
@@ -701,17 +703,17 @@
             let activeH = document.querySelector('#wheel-h .tp-item.active');
             let activeM = document.querySelector('#wheel-m .tp-item.active');
             let activeA = document.querySelector('#wheel-a .tp-item.active');
-            
+
             if(!activeH || !activeM || !activeA) return; 
-            
+
             let valH = parseInt(activeH.dataset.val);
             let valM = parseInt(activeM.dataset.val);
             let valA = activeA.dataset.val;
-            
+
             let h24 = valH;
             if(valA === 'PM' && valH !== 12) h24 += 12;
             if(valA === 'AM' && valH === 12) h24 = 0;
-            
+
             let time24 = String(h24).padStart(2, '0') + ':' + String(valM).padStart(2, '0');
             updateTimeDisplay(currentTargetTime, time24);
         }
@@ -729,9 +731,10 @@
         let logicalToday = getLogicalDate();
         let todayTasks = db.filter(t => t.date === logicalToday);
         let last = todayTasks.length ? todayTasks[todayTasks.length - 1] : null;
-        
+
         document.getElementById('edit-id').value = "";
-        
+        document.getElementById('task-date').value = getLogicalDate(); // নতুন যোগ করা লাইন
+
         if(last) {
             updateTimeDisplay('start', last.eRaw);
         } else {
@@ -739,10 +742,10 @@
             let currentStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
             updateTimeDisplay('start', currentStr);
         }
-        
+
         document.getElementById('end-t').value = "";
         document.getElementById('disp-end-t').innerText = "--:--";
-        
+
         document.getElementById('task-det').value = "";
         document.getElementById('form-title').innerText = "কাজ যোগ করুন";
         document.getElementById('modal-form').style.display='flex';
@@ -768,11 +771,13 @@
     function saveData() {
         let s=document.getElementById('start-t').value, e=document.getElementById('end-t').value, c=document.getElementById('task-cat').value, d=document.getElementById('task-det').value, id=document.getElementById('edit-id').value;
         if(!s || !e) return showToast("দয়া করে সময় দিন!");
-        
-        let logicalDate = id !== "" ? db[id].date : getLogicalDate();
+
+        let logicalDate = document.getElementById('task-date').value; // নতুন পরিবর্তন
+        if(!logicalDate) return showToast("দয়া করে তারিখ নির্বাচন করুন!");
+
         let newStart = getMinsFrom4AM(s);
         let newEnd = getMinsFrom4AM(e);
-        
+
         if(newEnd <= newStart) newEnd += 1440;
 
         let overlapTask = db.find((t, index) => {
@@ -792,7 +797,7 @@
         let diff = newEnd - newStart; 
         let task = { date: logicalDate, sRaw:s, eRaw:e, time:`${fmtT(s)}-${fmtT(e)}`, mins:diff, dur:fmtD(diff), cat:c, det:d };
         if(id!=="") db[id]=task; else db.push(task);
-        
+
         db.sort((a, b) => {
             if (a.date !== b.date) return a.date.localeCompare(b.date);
             return getMinsFrom4AM(a.sRaw) - getMinsFrom4AM(b.sRaw);
@@ -811,10 +816,11 @@
             render(); renderHistory(); 
         } 
     }
-    
+
     function editItem(i) { 
         let t=db[i]; 
         document.getElementById('edit-id').value=i; 
+        document.getElementById('task-date').value=t.date; // নতুন লাইন
         updateTimeDisplay('start', t.sRaw); 
         updateTimeDisplay('end', t.eRaw); 
         document.getElementById('task-cat').value=t.cat; 
@@ -828,7 +834,7 @@
         const tbody = document.getElementById('list-daily'); tbody.innerHTML = "";
         const summaryBox = document.getElementById('daily-summary-box');
         const summaryTbody = document.getElementById('list-daily-summary');
-        
+
         let totalMins = 0; let catTotals = {};
         let dailyCount = 0; 
 
@@ -839,7 +845,7 @@
                 tbody.innerHTML += `<tr><td style="border-right:1px solid var(--border-color);">${t.time}</td><td>${t.dur}</td><td style="text-align:left; border-left:1px solid var(--border-color);"><span style="color:${getClr(t.cat)};font-weight:bold;">${t.cat}</span><br><small style="color:var(--text-muted);">${t.det}</small></td><td><div class="action-btns"><button class="btn-act btn-edit" onclick="editItem(${i})">${pencilIco}</button><button class="btn-act btn-del" onclick="deleteItem(${i})">${trashIco}</button></div></td></tr>`;
             }
         });
-        
+
         if(!tbody.innerHTML) {
             tbody.innerHTML = '<tr><td colspan="4" style="padding:30px;color:var(--text-muted);text-align:center;">আজ কোনো ডাটা নেই</td></tr>';
             summaryBox.style.display = 'none';
@@ -852,21 +858,21 @@
                 summaryTbody.innerHTML += `<tr><td style="text-align:left;">${cat}</td><td style="text-align:right; font-weight:bold; font-size:16px;">${timeStr}</td></tr>`;
             }
         }
-        
+
         let indDaily = document.getElementById('ind-daily');
         if (indDaily) indDaily.style.display = dailyCount > 5 ? 'block' : 'none';
-        
+
         let percent = (totalMins / 1440) * 100; if(percent > 100) percent = 100;
         document.getElementById('progress-fill').style.width = percent + "%";
-        
+
         let recHrs = Math.floor(totalMins/60), recMins = totalMins%60;
         let remMins = 1440 - totalMins; let remHrs = Math.floor(remMins/60), remMinsRest = remMins%60;
-        
+
         document.getElementById('recorded-time').innerText = toBn(recHrs) + "ঘ " + toBn(recMins) + "মি";
         document.getElementById('remaining-time').innerText = toBn(remHrs) + "ঘ " + toBn(remMinsRest) + "মি";
 
         updateAnalytics(db.filter(t=>t.date===logicalToday), 'table-summary', 'chart-summary', 'box-summary', 's');
-        
+
         let lastWeek = new Date(); lastWeek.setDate(lastWeek.getDate() - 7);
         updateAnalytics(db.filter(t=>new Date(t.date) > lastWeek), 'table-weekly', 'chart-weekly', 'box-weekly', 'w');
 
@@ -881,16 +887,16 @@
 
     function updateAnalytics(arr, tid, cid, bid, key) {
         let m = {}; arr.forEach(t => m[t.cat] = (m[t.cat]||0) + t.mins);
-        
+
         let sortedLabs = Object.keys(m).sort((a, b) => m[b] - m[a]);
         let dats = sortedLabs.map(l => m[l]);
-        
+
         let totalMins = dats.reduce((a, b) => a + b, 0);
 
         let html = sortedLabs.map(l => {
             let perc = totalMins ? ((m[l] / totalMins) * 100).toFixed(1) : 0;
             let color = getClr(l);
-            
+
             return `<tr>
                 <td style="text-align:left; padding:6px 0; border-bottom:1px dashed var(--border-color); font-size:12px; width:22%; font-weight:bold;">
                     <span style="color:${color}; font-size:14px;">●</span> ${l}
@@ -937,7 +943,7 @@
 
         let months = ['জানু', 'ফেব্রু', 'মার্চ', 'এপ্রি', 'মে', 'জুন', 'জুলা', 'আগ', 'সেপ্টে', 'অক্টো', 'নভে', 'ডিসে'];
         let catData = {};
-        
+
         arr.forEach(t => {
             if(!catData[t.cat]) catData[t.cat] = Array(12).fill(0);
             let m = parseInt(t.date.split('-')[1]) - 1;
@@ -993,16 +999,16 @@
             monthInput = logicalToday.substring(0, 7);
             document.getElementById('report-month').value = monthInput;
         }
-        
+
         let [y, m] = monthInput.split('-');
         let daysInMonth = new Date(y, m, 0).getDate(); 
-        
+
         let reportData = {};
         for(let i=1; i<=daysInMonth; i++) {
             let dateStr = `${y}-${m}-${String(i).padStart(2, '0')}`;
             reportData[dateStr] = { total: 0, cats: {} };
         }
-        
+
         let monthlyGrandTotal = 0;
         let monthlyCatTotals = {};
 
@@ -1011,25 +1017,25 @@
                 if(reportData[t.date]) {
                     reportData[t.date].total += t.mins;
                     reportData[t.date].cats[t.cat] = (reportData[t.date].cats[t.cat] || 0) + t.mins;
-                    
+
                     monthlyGrandTotal += t.mins;
                     monthlyCatTotals[t.cat] = (monthlyCatTotals[t.cat] || 0) + t.mins;
                 }
             }
         });
-        
+
         let tbody = document.getElementById('tbody-monthly-report');
         tbody.innerHTML = '';
-        
+
         for(let i=1; i<=daysInMonth; i++) {
             let dateStr = `${y}-${m}-${String(i).padStart(2, '0')}`;
             let data = reportData[dateStr];
-            
+
             let catDetailsHTML = '<span style="color:var(--text-muted)">-</span>';
-            
+
             if(data.total > 0) {
                 let sortedCats = Object.keys(data.cats).sort((a,b) => data.cats[b] - data.cats[a]);
-                
+
                 catDetailsHTML = sortedCats.map(c => {
                     return `<span style="display:inline-block; margin-right:12px; font-size:11px;">
                                 <span class="no-print" style="color:${getClr(c)}; font-size:12px;">●</span> 
@@ -1037,7 +1043,7 @@
                             </span>`;
                 }).join('');
             }
-            
+
             tbody.innerHTML += `
             <tr>
                 <td style="font-weight:bold; font-size:13px; border-bottom:1px solid var(--border-color); vertical-align:middle; padding:10px 5px;">${toBn(i)}</td>
@@ -1051,7 +1057,7 @@
                 </td>
             </tr>`;
         }
-        
+
         let indReport = document.getElementById('ind-monthly-report');
         if(indReport) indReport.style.display = daysInMonth > 6 ? 'block' : 'none';
     }
@@ -1059,7 +1065,7 @@
     function printReport() {
         let monthInput = document.getElementById('report-month').value;
         if(!monthInput) return showToast("মাস নির্বাচন করুন");
-        
+
         let [y, m] = monthInput.split('-');
         const monthNames = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
         let monthName = monthNames[parseInt(m)-1] + " " + toBn(y);
@@ -1134,7 +1140,7 @@
                 © সিস্টেম জেনারেটেড রিপোর্ট — ডাইরি নোট
             </div>
         `;
-        
+
         document.getElementById('print-area').innerHTML = printHtml;
         window.print();
     }
@@ -1142,7 +1148,7 @@
     function renderHistory() {
         let date = document.getElementById('history-date').value, tbody = document.getElementById('list-history');
         let summaryBox = document.getElementById('history-summary-box'), summaryTbody = document.getElementById('list-history-summary');
-        
+
         tbody.innerHTML = ""; if(!date) return; let found = false; let catTotals = {};
         let historyCount = 0; 
 
@@ -1153,7 +1159,7 @@
                 tbody.innerHTML += `<tr><td>${t.time}</td><td style="text-align:left;"><span style="color:${getClr(t.cat)};font-weight:bold;">${t.cat}</span><br><small style="color:var(--text-muted);">${t.det}</small></td><td><div class="action-btns"><button class="btn-act btn-edit" onclick="editItem(${i})">${pencilIco}</button><button class="btn-act btn-del" onclick="deleteItem(${i})">${trashIco}</button></div></td></tr>`;
             }
         });
-        
+
         if(!found) {
             tbody.innerHTML = '<tr><td colspan="3" style="padding:30px;color:var(--text-muted);text-align:center;">তথ্য পাওয়া যায়নি</td></tr>';
             summaryBox.style.display = 'none';
@@ -1165,7 +1171,7 @@
                 summaryTbody.innerHTML += `<tr><td style="text-align:left;">${cat}</td><td style="text-align:right; font-weight:bold; font-size:16px;">${timeStr}</td></tr>`;
             }
         }
-        
+
         let indHistory = document.getElementById('ind-history');
         if (indHistory) indHistory.style.display = historyCount > 6 ? 'block' : 'none';
     }
@@ -1173,7 +1179,7 @@
     window.onload = () => {
         applyTheme(currentTheme); 
         setupWheels(); 
-        
+
         let randomQuote = islamicQuotes[Math.floor(Math.random() * islamicQuotes.length)];
         document.getElementById('quote-text-main').innerText = randomQuote.text;
         document.getElementById('quote-ref').innerText = randomQuote.ref;
@@ -1183,7 +1189,6 @@
     };
 </script>
 
-<!-- ফায়ারবেস মডিউল স্ক্রিপ্ট -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -1227,27 +1232,27 @@
     const loginBtn = document.getElementById('login-btn');
     if (user) {
       window.currentUser = user;
-      
+
       if(loginBtn) {
         loginBtn.innerHTML = `<img src="${user.photoURL}" style="width:16px; height:16px; border-radius:50%; vertical-align:middle; margin-right:5px;"> লগআউট`;
         loginBtn.onclick = window.logoutGoogle;
         loginBtn.style.background = "var(--danger)";
       }
-      
+
       showToast("ডেটা লোড হচ্ছে...");
-      
+
       try {
         const docRef = doc(dbFirestore, "user_routines", user.uid);
         const docSnap = await getDoc(docRef);
-        
+
         if (docSnap.exists()) {
           let data = docSnap.data();
           db = data.routineData || [];
           cats = data.categories || ["ইবাদত", "ঘুম", "পড়াশোনা", "খাবার", "কাজ"];
-          
+
           localStorage.setItem('smart_routine_v2', JSON.stringify(db));
           localStorage.setItem('cats_v2', JSON.stringify(cats));
-          
+
           render();
           renderCats();
           if(typeof renderHistory === 'function') renderHistory();
