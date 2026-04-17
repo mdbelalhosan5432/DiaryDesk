@@ -112,6 +112,10 @@
         .chart-box { width: 100px; height: 100px; position: relative; flex-shrink: 0; display: none; }
         .bar-chart-container { height: 220px; padding: 10px; width: 100%; display: none; }
 
+        .rh-card { flex: 1; background: var(--input-bg); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center;}
+        .rh-title { font-size: 10px; color: var(--text-muted); font-weight: bold; margin-bottom: 4px; }
+        .rh-val { font-size: 14px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
         .action-btns { display: flex; gap: 6px; justify-content: center; }
         .btn-act { border: none; padding: 6px; border-radius: 6px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
         .btn-edit { color: var(--primary); background: var(--th-bg); }
@@ -171,17 +175,9 @@
         .tp-item.active { color: var(--text); font-size: 24px; font-weight: bold; opacity: 1; }
         .tp-overlay { position: absolute; top: 60px; left: 5%; right: 5%; height: 40px; border-top: 1.5px solid var(--border-color); border-bottom: 1.5px solid var(--border-color); pointer-events: none; }
 
-        /* --- প্রফেশনাল প্রিন্ট স্টাইল ফিক্সড --- */
+        /* --- প্রফেশনাল প্রিন্ট স্টাইল --- */
         @media print {
-            /* প্রিন্টের জন্য ব্রাউজারের রেস্ট্রিকশনগুলো সরিয়ে দেওয়া হলো */
-            html, body {
-                height: auto !important;
-                width: auto !important;
-                overflow: visible !important;
-                position: static !important;
-                background: #fff !important;
-            }
-
+            html, body { height: auto !important; width: auto !important; overflow: visible !important; position: static !important; background: #fff !important; }
             body * { visibility: hidden; }
             #print-area, #print-area * { visibility: visible; }
             #print-area { position: absolute; left: 0; top: 0; width: 100%; color: #000 !important; background: #fff !important; padding: 0; margin: 0; font-family: 'Kalpurush', sans-serif; box-sizing: border-box; }
@@ -241,7 +237,7 @@
                     <div class="progress-dot"></div>
                 </div>
             </div>
-            <div style="text-align:center; font-size:9px; color:var(--text-muted); margin-top:8px;">* হিসাবটি ভোর ৪টা থেকে পরবর্তী দিন ভোর ৪টা পর্যন্ত।</div>
+            <div id="day-start-note" style="text-align:center; font-size:9px; color:var(--text-muted); margin-top:8px;">* হিসাবটি ভোর ৪টা থেকে পরবর্তী দিন ভোর ৪টা পর্যন্ত।</div>
         </div>
 
         <div class="card-panel" style="margin: 0 10px; overflow: hidden; display: flex; flex-direction: column;">
@@ -310,7 +306,7 @@
 
         <div class="db-card card-panel" style="margin-bottom: 20px;">
             <div class="db-title" style="display:flex; justify-content:space-between; align-items:center;">
-                <span>মাসিক রিপোর্ট কার্ড</span>
+                <span>মাসিক রিপোর্ট ড্যাশবোর্ড</span>
                 <div style="display:flex; gap: 8px;">
                     <button onclick="printReport()" style="background:var(--input-bg); color:var(--text); border:1px solid var(--border-color); padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:4px;">
                         🖨️ প্রিন্ট
@@ -318,8 +314,28 @@
                     <input type="month" id="report-month" onchange="renderMonthlyReport()" style="padding:4px 8px; font-size:12px; font-weight:bold; border-radius:6px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--primary); outline:none;">
                 </div>
             </div>
+            
             <div class="db-content">
-                <div class="card-table-wrap" id="wrap-monthly-report" style="max-height: 400px; padding: 0;">
+                <div style="display: flex; gap: 8px; padding: 12px 15px; border-bottom: 1px solid var(--border-color);">
+                    <div class="rh-card">
+                        <div class="rh-title">মোট রেকর্ড</div>
+                        <div class="rh-val" id="rh-total" style="color: var(--primary);">০ঘ ০০মি</div>
+                    </div>
+                    <div class="rh-card">
+                        <div class="rh-title">দৈনিক গড়</div>
+                        <div class="rh-val" id="rh-avg" style="color: var(--success);">০ঘ ০০মি</div>
+                    </div>
+                    <div class="rh-card">
+                        <div class="rh-title">শীর্ষ কাজ</div>
+                        <div class="rh-val" id="rh-top" style="color: var(--danger); font-size: 13px;">-</div>
+                    </div>
+                </div>
+
+                <div class="bar-chart-container" id="box-monthly-trend" style="display: block; height: 160px; padding: 10px; border-bottom: 1px dashed var(--border-color);">
+                    <canvas id="chart-monthly-trend"></canvas>
+                </div>
+
+                <div class="card-table-wrap" id="wrap-monthly-report" style="max-height: 250px; padding: 0;">
                     <table style="width:100%; border:none; background:transparent;">
                         <thead>
                             <tr>
@@ -344,10 +360,36 @@
     </main>
 
     <main id="tab-history" class="tab-content" style="padding: 10px;">
-        <div class="db-title card-panel" style="margin-bottom:10px; border-radius:8px;">হিস্ট্রি অনুসন্ধান</div>
-        <div style="display:flex; gap:8px; margin-bottom: 15px;">
-            <input type="date" id="history-date">
-            <button onclick="renderHistory()" style="background:var(--primary); color:white; border:none; padding:0 15px; border-radius:8px; font-weight:bold; font-size:13px; cursor:pointer; box-shadow: 0 4px 10px rgba(67,97,238,0.2);">সার্চ</button>
+        <div class="db-title card-panel" style="margin-bottom:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+            <span>অ্যাডভান্সড হিস্ট্রি অনুসন্ধান</span>
+            <button onclick="printHistory()" style="background:var(--input-bg); color:var(--text); border:1px solid var(--border-color); padding:4px 8px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:4px;">
+                🖨️ প্রিন্ট
+            </button>
+        </div>
+        
+        <div class="card-panel" style="padding:12px; margin-bottom: 15px; display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; gap:8px;">
+                <div style="flex:1;">
+                    <label style="font-size:10px; color:var(--text-muted); font-weight:bold;">তারিখ (ঐচ্ছিক)</label>
+                    <input type="date" id="history-date" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:6px; background:var(--input-bg); color:var(--text); outline:none;">
+                </div>
+                <div style="display:flex; align-items:flex-end;">
+                    <button onclick="document.getElementById('history-date').value=''" style="background:var(--th-bg); border:1px solid var(--border-color); color:var(--text); padding:8px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:bold;">মুছুন</button>
+                </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <div style="flex:1;">
+                    <label style="font-size:10px; color:var(--text-muted); font-weight:bold;">ক্যাটাগরি</label>
+                    <select id="history-cat" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:6px; background:var(--input-bg); color:var(--text); outline:none;">
+                        <option value="">সব ক্যাটাগরি</option>
+                    </select>
+                </div>
+                <div style="flex:1;">
+                    <label style="font-size:10px; color:var(--text-muted); font-weight:bold;">কাজের নাম</label>
+                    <input type="text" id="history-search" placeholder="যেমন: বই পড়া" style="width:100%; padding:8px; border:1px solid var(--border-color); border-radius:6px; background:var(--input-bg); color:var(--text); outline:none;">
+                </div>
+            </div>
+            <button onclick="renderHistory()" style="background:var(--primary); color:white; border:none; padding:10px; border-radius:6px; font-weight:bold; font-size:14px; cursor:pointer; box-shadow: 0 4px 10px rgba(67,97,238,0.2); margin-top:5px;">সার্চ করুন</button>
         </div>
 
         <div class="card-panel" style="overflow: hidden; display: flex; flex-direction: column;">
@@ -355,7 +397,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th width="28%">সময়</th>
+                            <th width="28%">তারিখ ও সময়</th>
                             <th width="47%">কাজ</th>
                             <th width="25%">একশন</th>
                         </tr>
@@ -370,8 +412,8 @@
             <table class="summary-table">
                 <thead>
                     <tr>
-                        <th style="text-align:left;">এক নজরে</th>
-                        <th style="text-align:right;">ঘণ্টা</th>
+                        <th style="text-align:left;">সার্চের সামারি</th>
+                        <th style="text-align:right;">মোট সময়</th>
                     </tr>
                 </thead>
                 <tbody id="list-history-summary"></tbody>
@@ -381,6 +423,15 @@
 
     <main id="tab-settings" class="tab-content" style="padding: 10px; padding-bottom: 90px;">
         <div class="db-title card-panel" style="margin-bottom:10px; border-radius:8px;">অ্যাপ সেটিংস</div>
+
+        <div class="db-card card-panel" style="margin: 0 0 15px 0;">
+            <div style="padding: 12px 15px; font-size: 13px; font-weight: bold; border-bottom: 1px solid var(--border-color);">দিনের শুরু</div>
+            <div style="padding: 15px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">আপনার দিন কখন থেকে শুরু হয়?<br><small>(এটি রুটিনের তারিখ পরিবর্তনে সাহায্য করবে)</small></span>
+                <select id="day-start-select" onchange="changeDayStart()" style="padding: 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--input-bg); color: var(--text); font-weight: bold; outline: none; min-width: 110px;">
+                    </select>
+            </div>
+        </div>
 
         <div class="db-card card-panel" style="margin: 0 0 15px 0;">
             <div style="padding: 12px 15px; font-size: 13px; font-weight: bold; border-bottom: 1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
@@ -534,6 +585,10 @@
     let charts = {};
 
     let currentTheme = localStorage.getItem('theme_v2') || 'light';
+    
+    // নতুন সেটিং: দিনের শুরুর ঘন্টা
+    let dayStartHour = parseInt(localStorage.getItem('day_start_hour_v2'));
+    if (isNaN(dayStartHour)) dayStartHour = 4; // ডিফল্ট ভোর ৪টা
 
     function applyTheme(theme) {
         document.body.classList.remove('dark-mode', 'light-mode');
@@ -562,16 +617,60 @@
     function fmtD(mins) { let h=Math.floor(mins/60), m=mins%60; return toBn(h)+'ঘ '+toBn(m)+'মি'; }
     function getClr(cat) { const p = ['#4361ee', '#f72585', '#06d6a0', '#ef233c', '#ffb703', '#7209b7', '#4cc9f0']; let h = 0; for(let i=0; i<cat.length; i++) h += cat.charCodeAt(i); return p[h % p.length]; }
 
+    // সময়কে বাংলায় রূপান্তর
+    function getHourNameBn(h) {
+        if (h === 0) return "রাত ১২টা";
+        if (h < 4) return "রাত " + toBn(h) + "টা";
+        if (h < 6) return "ভোর " + toBn(h) + "টা";
+        if (h < 12) return "সকাল " + toBn(h) + "টা";
+        if (h === 12) return "দুপুর ১২টা";
+        if (h < 16) return "দুপুর " + toBn(h - 12) + "টা";
+        if (h < 18) return "বিকাল " + toBn(h - 12) + "টা";
+        if (h < 20) return "সন্ধ্যা " + toBn(h - 12) + "টা";
+        return "রাত " + toBn(h - 12) + "টা";
+    }
+
+    function renderDayStartOptions() {
+        let select = document.getElementById('day-start-select');
+        select.innerHTML = '';
+        for(let i=0; i<24; i++) {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = getHourNameBn(i);
+            if(i === dayStartHour) opt.selected = true;
+            select.appendChild(opt);
+        }
+        updateDayStartText();
+    }
+
+    function changeDayStart() {
+        dayStartHour = parseInt(document.getElementById('day-start-select').value);
+        localStorage.setItem('day_start_hour_v2', dayStartHour);
+        updateDayStartText();
+        if(window.syncToFirebase) window.syncToFirebase();
+        showToast("দিনের শুরুর সময় পরিবর্তন হয়েছে!");
+        render(); 
+    }
+
+    function updateDayStartText() {
+        let note = document.getElementById('day-start-note');
+        if (note) {
+            note.innerText = `* হিসাবটি ${getHourNameBn(dayStartHour)} থেকে পরবর্তী দিন ${getHourNameBn(dayStartHour)} পর্যন্ত।`;
+        }
+    }
+
+    // ডাইনামিক দিন পরিবর্তনের ফাংশন
     function getLogicalDate(d = new Date()) {
         let dateObj = new Date(d);
-        if (dateObj.getHours() < 4) dateObj.setDate(dateObj.getDate() - 1);
+        if (dateObj.getHours() < dayStartHour) dateObj.setDate(dateObj.getDate() - 1);
         let year = dateObj.getFullYear(), month = String(dateObj.getMonth() + 1).padStart(2, '0'), day = String(dateObj.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
 
-    function getMinsFrom4AM(t) {
+    // শুরুর সময় থেকে মিনিটের হিসাব
+    function getMinsFromStart(t) {
         let [h, m] = t.split(':').map(Number);
-        return h < 4 ? (h + 20) * 60 + m : (h - 4) * 60 + m;
+        return h < dayStartHour ? (h + 24 - dayStartHour) * 60 + m : (h - dayStartHour) * 60 + m;
     }
 
     function showToast(m) { let t=document.getElementById('toast'); t.innerText=m; t.style.display='block'; setTimeout(()=>t.style.display='none', 2500); }
@@ -582,7 +681,16 @@
         render(); if(id === 'tab-history') renderHistory();
     }
 
-    function renderCats() { let s=document.getElementById('task-cat'); s.innerHTML=cats.map(c=>`<option value="${c}">${c}</option>`).join(''); }
+    function renderCats() { 
+        let s = document.getElementById('task-cat'); 
+        s.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join(''); 
+        
+        let hc = document.getElementById('history-cat');
+        if(hc) {
+            hc.innerHTML = `<option value="">সব ক্যাটাগরি</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+        }
+    }
+
     function manageCats() { document.getElementById('modal-category').style.display = 'flex'; renderCatList(); }
     function closeCatModal() { document.getElementById('modal-category').style.display = 'none'; renderCats(); }
 
@@ -622,7 +730,6 @@
         renderCatList(); renderCats(); 
     }
 
-    /* --- কাস্টম টাইম পিকার ফাংশনালিটি --- */
     let currentTargetTime = null;
 
     function initWheel(id, start, end, formatFn) {
@@ -733,7 +840,7 @@
         let last = todayTasks.length ? todayTasks[todayTasks.length - 1] : null;
 
         document.getElementById('edit-id').value = "";
-        document.getElementById('task-date').value = getLogicalDate(); // নতুন যোগ করা লাইন
+        document.getElementById('task-date').value = getLogicalDate();
 
         if(last) {
             updateTimeDisplay('start', last.eRaw);
@@ -772,19 +879,20 @@
         let s=document.getElementById('start-t').value, e=document.getElementById('end-t').value, c=document.getElementById('task-cat').value, d=document.getElementById('task-det').value, id=document.getElementById('edit-id').value;
         if(!s || !e) return showToast("দয়া করে সময় দিন!");
 
-        let logicalDate = document.getElementById('task-date').value; // নতুন পরিবর্তন
+        let logicalDate = document.getElementById('task-date').value;
         if(!logicalDate) return showToast("দয়া করে তারিখ নির্বাচন করুন!");
 
-        let newStart = getMinsFrom4AM(s);
-        let newEnd = getMinsFrom4AM(e);
+        // দিন শুরুর ডাইনামিক ভ্যালু দিয়ে ক্যালকুলেশন
+        let newStart = getMinsFromStart(s);
+        let newEnd = getMinsFromStart(e);
 
         if(newEnd <= newStart) newEnd += 1440;
 
         let overlapTask = db.find((t, index) => {
             if(t.date !== logicalDate) return false;
             if(id !== "" && index == id) return false;
-            let eStart = getMinsFrom4AM(t.sRaw);
-            let eEnd = getMinsFrom4AM(t.eRaw);
+            let eStart = getMinsFromStart(t.sRaw);
+            let eEnd = getMinsFromStart(t.eRaw);
             if(eEnd <= eStart) eEnd += 1440;
             return (newStart < eEnd && newEnd > eStart);
         });
@@ -800,7 +908,7 @@
 
         db.sort((a, b) => {
             if (a.date !== b.date) return a.date.localeCompare(b.date);
-            return getMinsFrom4AM(a.sRaw) - getMinsFrom4AM(b.sRaw);
+            return getMinsFromStart(a.sRaw) - getMinsFromStart(b.sRaw);
         });
 
         localStorage.setItem('smart_routine_v2', JSON.stringify(db));
@@ -820,7 +928,7 @@
     function editItem(i) { 
         let t=db[i]; 
         document.getElementById('edit-id').value=i; 
-        document.getElementById('task-date').value=t.date; // নতুন লাইন
+        document.getElementById('task-date').value=t.date;
         updateTimeDisplay('start', t.sRaw); 
         updateTimeDisplay('end', t.eRaw); 
         document.getElementById('task-cat').value=t.cat; 
@@ -957,39 +1065,42 @@
             borderWidth: 0
         }));
 
-        if(charts['yearly']) charts['yearly'].destroy();
-        charts['yearly'] = new Chart(document.getElementById(cid), {
-            type: 'bar',
-            data: { labels: months, datasets: datasets },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { 
-                    legend: { display: true, position: 'bottom', labels: { boxWidth: 10, font: {size: 10} } },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let mins = Math.round(context.raw * 60);
-                                return context.dataset.label + ': ' + fmtD(mins);
+        // Chart লোড হয়েছে কিনা চেক করা হচ্ছে
+        if (typeof Chart !== 'undefined') {
+            if(charts['yearly']) charts['yearly'].destroy();
+            charts['yearly'] = new Chart(document.getElementById(cid), {
+                type: 'bar',
+                data: { labels: months, datasets: datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { 
+                        legend: { display: true, position: 'bottom', labels: { boxWidth: 10, font: {size: 10} } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let mins = Math.round(context.raw * 60);
+                                    return context.dataset.label + ': ' + fmtD(mins);
+                                }
                             }
                         }
-                    }
-                },
-                scales: {
-                    x: { stacked: true, ticks: {font: {size: 9}} },
-                    y: { 
-                        stacked: true, 
-                        title: { display: true, text: 'সময় (ঘণ্টা)', font: {size: 10, weight: 'bold'}, color: 'var(--text-muted)' },
-                        ticks: {
-                            font: {size: 10},
-                            callback: function(value) {
-                                return toBn(value) + 'ঘ';
-                            }
-                        } 
+                    },
+                    scales: {
+                        x: { stacked: true, ticks: {font: {size: 9}} },
+                        y: { 
+                            stacked: true, 
+                            title: { display: true, text: 'সময় (ঘণ্টা)', font: {size: 10, weight: 'bold'}, color: 'var(--text-muted)' },
+                            ticks: {
+                                font: {size: 10},
+                                callback: function(value) {
+                                    return toBn(value) + 'ঘ';
+                                }
+                            } 
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     function renderMonthlyReport() {
@@ -1004,13 +1115,18 @@
         let daysInMonth = new Date(y, m, 0).getDate(); 
 
         let reportData = {};
+        let chartLabels = [];
+        let chartData = [];
+
         for(let i=1; i<=daysInMonth; i++) {
             let dateStr = `${y}-${m}-${String(i).padStart(2, '0')}`;
             reportData[dateStr] = { total: 0, cats: {} };
+            chartLabels.push(toBn(i));
         }
 
         let monthlyGrandTotal = 0;
         let monthlyCatTotals = {};
+        let activeDays = 0;
 
         db.forEach(t => {
             if(t.date.startsWith(monthInput)) {
@@ -1030,6 +1146,9 @@
         for(let i=1; i<=daysInMonth; i++) {
             let dateStr = `${y}-${m}-${String(i).padStart(2, '0')}`;
             let data = reportData[dateStr];
+
+            chartData.push(data.total / 60);
+            if(data.total > 0) activeDays++;
 
             let catDetailsHTML = '<span style="color:var(--text-muted)">-</span>';
 
@@ -1056,6 +1175,67 @@
                     </div>
                 </td>
             </tr>`;
+        }
+
+        document.getElementById('rh-total').innerText = fmtD(monthlyGrandTotal);
+        
+        let avgMins = activeDays > 0 ? Math.round(monthlyGrandTotal / activeDays) : 0;
+        document.getElementById('rh-avg').innerText = fmtD(avgMins);
+        
+        let topCatText = '-';
+        if (monthlyGrandTotal > 0) {
+            let sortedMonthlyCats = Object.keys(monthlyCatTotals).sort((a,b) => monthlyCatTotals[b] - monthlyCatTotals[a]);
+            topCatText = sortedMonthlyCats[0];
+        }
+        document.getElementById('rh-top').innerText = topCatText;
+
+        // Chart লোড হয়েছে কিনা চেক করা হচ্ছে
+        if (typeof Chart !== 'undefined') {
+            if(charts['monthlyTrend']) charts['monthlyTrend'].destroy();
+            charts['monthlyTrend'] = new Chart(document.getElementById('chart-monthly-trend'), {
+                type: 'line',
+                data: {
+                    labels: chartLabels,
+                    datasets: [{
+                        label: 'দৈনিক রেকর্ড',
+                        data: chartData,
+                        borderColor: '#06d6a0',
+                        backgroundColor: 'rgba(6, 214, 160, 0.15)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#06d6a0',
+                        pointRadius: 3,
+                        fill: true,
+                        tension: 0.3 
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let mins = Math.round(context.raw * 60);
+                                    return 'মোট সময়: ' + fmtD(mins);
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ticks: { font: {size: 9}, color: 'gray' }, grid: {display: false} },
+                        y: { 
+                            beginAtZero: true,
+                            ticks: {
+                                font: {size: 9}, color: 'gray',
+                                callback: function(value) { return toBn(value) + 'ঘ'; }
+                            },
+                            grid: { borderDash: [3, 3], color: 'rgba(0,0,0,0.05)' }
+                        }
+                    }
+                }
+            });
         }
 
         let indReport = document.getElementById('ind-monthly-report');
@@ -1145,26 +1325,172 @@
         window.print();
     }
 
-    function renderHistory() {
-        let date = document.getElementById('history-date').value, tbody = document.getElementById('list-history');
-        let summaryBox = document.getElementById('history-summary-box'), summaryTbody = document.getElementById('list-history-summary');
-
-        tbody.innerHTML = ""; if(!date) return; let found = false; let catTotals = {};
-        let historyCount = 0; 
-
-        db.forEach((t, i) => {
-            if(t.date === date) {
-                found = true; catTotals[t.cat] = (catTotals[t.cat] || 0) + t.mins;
-                historyCount++;
-                tbody.innerHTML += `<tr><td>${t.time}</td><td style="text-align:left;"><span style="color:${getClr(t.cat)};font-weight:bold;">${t.cat}</span><br><small style="color:var(--text-muted);">${t.det}</small></td><td><div class="action-btns"><button class="btn-act btn-edit" onclick="editItem(${i})">${pencilIco}</button><button class="btn-act btn-del" onclick="deleteItem(${i})">${trashIco}</button></div></td></tr>`;
-            }
+    function printHistory() {
+        let dateFilter = document.getElementById('history-date').value;
+        let catFilter = document.getElementById('history-cat').value;
+        let searchQ = document.getElementById('history-search').value.toLowerCase().trim();
+        
+        // সার্চ এবং ফিল্টার অনুযায়ী ডাটা আলাদা করা
+        let filteredTasks = db.filter(t => {
+            let matchDate = dateFilter ? (t.date === dateFilter) : true;
+            let matchCat = catFilter ? (t.cat === catFilter) : true;
+            let matchSearch = searchQ ? (t.det.toLowerCase().includes(searchQ) || t.cat.toLowerCase().includes(searchQ)) : true;
+            return matchDate && matchCat && matchSearch;
         });
 
-        if(!found) {
-            tbody.innerHTML = '<tr><td colspan="3" style="padding:30px;color:var(--text-muted);text-align:center;">তথ্য পাওয়া যায়নি</td></tr>';
+        if(filteredTasks.length === 0) {
+            return showToast("প্রিন্ট করার মতো কোনো তথ্য পাওয়া যায়নি!");
+        }
+
+        // নতুন থেকে পুরোনোর দিকে সাজানো
+        filteredTasks.sort((a, b) => {
+            if(a.date !== b.date) return new Date(b.date) - new Date(a.date);
+            return getMinsFromStart(b.sRaw) - getMinsFromStart(a.sRaw);
+        });
+
+        let totalMins = 0;
+        let catTotals = {};
+        let tableRows = '';
+
+        filteredTasks.forEach(t => {
+            totalMins += t.mins;
+            catTotals[t.cat] = (catTotals[t.cat] || 0) + t.mins;
+            
+            let dParts = t.date.split('-');
+            let shortDate = `${toBn(dParts[2])}/${toBn(dParts[1])}/${toBn(dParts[0])}`;
+
+            tableRows += `
+                <tr>
+                    <td style="text-align:center;">${shortDate}<br><span style="font-size:10px; color:#555;">${t.time}</span></td>
+                    <td style="text-align:center;">${t.dur}</td>
+                    <td class="text-left"><b>${t.cat}</b>: ${t.det}</td>
+                </tr>
+            `;
+        });
+
+        // প্রিন্টের ফিল্টার ইনফো তৈরি
+        let filterText = [];
+        if(dateFilter) {
+            let dParts = dateFilter.split('-');
+            filterText.push(`তারিখ: ${toBn(dParts[2])}/${toBn(dParts[1])}/${toBn(dParts[0])}`);
+        }
+        if(catFilter) filterText.push(`ক্যাটাগরি: ${catFilter}`);
+        if(searchQ) filterText.push(`সার্চ: "${searchQ}"`);
+        let filterDisplay = filterText.length > 0 ? filterText.join(' | ') : 'সকল রেকর্ড';
+
+        let today = new Date();
+        const monthNames = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+        let printDate = toBn(today.getDate()) + " " + monthNames[today.getMonth()] + " " + toBn(today.getFullYear());
+
+        let summaryHtml = Object.keys(catTotals).map(c => `<b>${c}:</b> ${fmtD(catTotals[c])}`).join(' | ');
+
+        let printHtml = `
+            <div class="print-header-container">
+                <div class="print-org-name">ডাইরি নোট</div>
+                <h2 class="print-title">কাস্টম হিস্ট্রি রিপোর্ট</h2>
+                <div class="print-meta">
+                    <span><b>অনুসন্ধানের ধরণ:</b> ${filterDisplay}</span>
+                    <span><b>প্রিন্ট ইস্যুর তারিখ:</b> ${printDate}</span>
+                </div>
+            </div>
+
+            <div class="print-summary-cards">
+                <div class="print-card">
+                    <div class="print-card-title">মোট অতিবাহিত সময়</div>
+                    <div class="print-card-value">${fmtD(totalMins)}</div>
+                </div>
+                <div class="print-card" style="flex: 2;">
+                    <div class="print-card-title">ক্যাটাগরি ভিত্তিক সামারি</div>
+                    <div class="print-card-value" style="font-size: 14px; margin-top: 3px;">${summaryHtml}</div>
+                </div>
+            </div>
+
+            <div class="print-section-title">অনুসন্ধানের বিস্তারিত বিবরণ</div>
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th width="20%">তারিখ ও সময়</th>
+                        <th width="15%">ব্যপ্তি</th>
+                        <th width="65%">কাজের বিবরণ (ক্যাটাগরি সহ)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableRows}
+                </tbody>
+            </table>
+
+            <div class="print-signature-area">
+                <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <div>রিপোর্ট প্রস্তুতকারক</div>
+                </div>
+                <div class="signature-box">
+                    <div class="signature-line"></div>
+                    <div>সংশ্লিষ্ট কর্তৃপক্ষ</div>
+                </div>
+            </div>
+            
+            <div class="print-footer-note">
+                © সিস্টেম জেনারেটেড রিপোর্ট — ডাইরি নোট
+            </div>
+        `;
+
+        document.getElementById('print-area').innerHTML = printHtml;
+        window.print();
+    }
+
+    function renderHistory() {
+        let dateFilter = document.getElementById('history-date').value;
+        let catFilter = document.getElementById('history-cat').value;
+        let searchQ = document.getElementById('history-search').value.toLowerCase().trim();
+        
+        let tbody = document.getElementById('list-history');
+        let summaryBox = document.getElementById('history-summary-box');
+        let summaryTbody = document.getElementById('list-history-summary');
+
+        tbody.innerHTML = ""; 
+        
+        // ফিল্টার লজিক
+        let filteredTasks = db.filter(t => {
+            let matchDate = dateFilter ? (t.date === dateFilter) : true;
+            let matchCat = catFilter ? (t.cat === catFilter) : true;
+            let matchSearch = searchQ ? (t.det.toLowerCase().includes(searchQ) || t.cat.toLowerCase().includes(searchQ)) : true;
+            return matchDate && matchCat && matchSearch;
+        });
+
+        // নতুন থেকে পুরোনোর দিকে সাজানো (Sort by Date and Time Descending)
+        filteredTasks.sort((a, b) => {
+            if(a.date !== b.date) return new Date(b.date) - new Date(a.date);
+            return getMinsFromStart(b.sRaw) - getMinsFromStart(a.sRaw);
+        });
+
+        let historyCount = 0; 
+        let catTotals = {};
+
+        filteredTasks.forEach((t) => {
+            catTotals[t.cat] = (catTotals[t.cat] || 0) + t.mins;
+            historyCount++;
+            
+            // তারিখ বাংলা ফরম্যাটে দেখানোর জন্য
+            let dParts = t.date.split('-');
+            let shortDate = `${toBn(dParts[2])}/${toBn(dParts[1])}`; 
+            
+            // এডিট/ডিলিটের জন্য অরিজিনাল ইনডেক্স খুঁজে বের করা
+            let originalIndex = db.indexOf(t);
+
+            tbody.innerHTML += `<tr>
+                <td style="font-size:11px; line-height:1.4;"><b>${shortDate}</b><br><span style="color:var(--text-muted)">${t.time}</span></td>
+                <td style="text-align:left;"><span style="color:${getClr(t.cat)};font-weight:bold;">${t.cat}</span><br><small style="color:var(--text-muted);">${t.det}</small></td>
+                <td><div class="action-btns"><button class="btn-act btn-edit" onclick="editItem(${originalIndex})">${pencilIco}</button><button class="btn-act btn-del" onclick="deleteItem(${originalIndex})">${trashIco}</button></div></td>
+            </tr>`;
+        });
+
+        if(filteredTasks.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" style="padding:30px;color:var(--text-muted);text-align:center;">কোনো তথ্য পাওয়া যায়নি</td></tr>';
             summaryBox.style.display = 'none';
         } else {
-            summaryBox.style.display = 'block'; summaryTbody.innerHTML = "";
+            summaryBox.style.display = 'block'; 
+            summaryTbody.innerHTML = "";
             for (let cat in catTotals) {
                 let m = catTotals[cat], hrs = Math.floor(m / 60), mins = m % 60;
                 let timeStr = toBn(hrs) + ":" + toBn(String(mins).padStart(2, '0'));
@@ -1179,12 +1505,15 @@
     window.onload = () => {
         applyTheme(currentTheme); 
         setupWheels(); 
+        renderDayStartOptions();
 
         let randomQuote = islamicQuotes[Math.floor(Math.random() * islamicQuotes.length)];
         document.getElementById('quote-text-main').innerText = randomQuote.text;
         document.getElementById('quote-ref').innerText = randomQuote.ref;
 
-        document.getElementById('history-date').value = getLogicalDate();
+        // হিস্ট্রি ট্যাবে গেলে সব ডাটা যেন প্রথমে দেখায় তার জন্য এটি ফাঁকা রাখা হলো
+        document.getElementById('history-date').value = "";
+        
         renderCats(); render();
     };
 </script>
@@ -1249,6 +1578,15 @@
           let data = docSnap.data();
           db = data.routineData || [];
           cats = data.categories || ["ইবাদত", "ঘুম", "পড়াশোনা", "খাবার", "কাজ"];
+          
+          if (data.dayStartHour !== undefined) {
+              dayStartHour = data.dayStartHour;
+              localStorage.setItem('day_start_hour_v2', dayStartHour);
+              if (document.getElementById('day-start-select')) {
+                  document.getElementById('day-start-select').value = dayStartHour;
+              }
+              updateDayStartText();
+          }
 
           localStorage.setItem('smart_routine_v2', JSON.stringify(db));
           localStorage.setItem('cats_v2', JSON.stringify(cats));
@@ -1278,7 +1616,8 @@
     try {
       await setDoc(doc(dbFirestore, "user_routines", window.currentUser.uid), {
         routineData: db,
-        categories: cats
+        categories: cats,
+        dayStartHour: dayStartHour
       });
       console.log("ক্লাউডে সফলভাবে সেভ হয়েছে!");
     } catch(e) {
@@ -1289,9 +1628,13 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('SW registered!', reg))
-        .catch(err => console.log('SW failed!', err));
+      navigator.serviceWorker.register('./sw.js') 
+      .then(registration => {
+        console.log('Service Worker Registered Successfully');
+      })
+      .catch(err => {
+        console.error('Service Worker Registration Failed:', err);
+      });
     });
   }
 </script>
