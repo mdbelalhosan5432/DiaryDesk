@@ -314,7 +314,7 @@
                     <input type="month" id="report-month" onchange="renderMonthlyReport()" style="padding:4px 8px; font-size:12px; font-weight:bold; border-radius:6px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--primary); outline:none;">
                 </div>
             </div>
-            
+
             <div class="db-content">
                 <div style="display: flex; gap: 8px; padding: 12px 15px; border-bottom: 1px solid var(--border-color);">
                     <div class="rh-card">
@@ -366,7 +366,7 @@
                 🖨️ প্রিন্ট
             </button>
         </div>
-        
+
         <div class="card-panel" style="padding:12px; margin-bottom: 15px; display:flex; flex-direction:column; gap:10px;">
             <div style="display:flex; gap:8px;">
                 <div style="flex:1;">
@@ -433,15 +433,52 @@
             </div>
         </div>
 
-        <div class="db-card card-panel" style="margin: 0 0 15px 0;">
-            <div style="padding: 12px 15px; font-size: 13px; font-weight: bold; border-bottom: 1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
-                ক্লাউড ব্যাকআপ
-                <button id="login-btn" onclick="if(window.loginWithGoogle) window.loginWithGoogle()" style="background: #4285F4; color: white; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 11px; display:flex; align-items:center;">
-                    গুগল লগইন
+        <div class="db-card card-panel profile-card" style="margin: 0 0 15px 0; overflow: hidden;">
+            
+            <div id="profile-logged-out" style="padding: 30px 15px; text-align: center;">
+                <div style="width: 70px; height: 70px; background: var(--input-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; border: 2px dashed var(--primary);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                </div>
+                <h3 style="font-size: 16px; margin-bottom: 8px;">ক্লাউড ব্যাকআপ</h3>
+                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 20px;">গুগল একাউন্ট দিয়ে লগইন করলে আপনার রুটিন ডেটা অনলাইনে সেভ থাকবে।</p>
+                <button onclick="if(window.loginWithGoogle) window.loginWithGoogle()" style="background: #4285F4; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; box-shadow: 0 4px 10px rgba(66, 133, 244, 0.3);">
+                    গুগল দিয়ে লগইন করুন
                 </button>
             </div>
-            <div style="padding: 15px; font-size: 11px; color: var(--text-muted); text-align:center;">
-                গুগল একাউন্ট দিয়ে লগইন করলে আপনার রুটিন ডাটা অনলাইনে সেভ থাকবে এবং কখনো হারাবে না।
+
+            <div id="profile-logged-in" style="display: none; text-align: center; padding-top: 20px;">
+                <div style="position: relative; display: inline-block;">
+                    <img id="user-avatar" src="" alt="Profile" style="width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    <div style="position: absolute; bottom: 0; right: 0; background: var(--primary); color: white; width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--card-bg); display: flex; align-items: center; justify-content: center;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                    </div>
+                </div>
+                <h3 id="user-name" style="font-size: 18px; margin: 10px 0 5px 0; color: var(--text);">Name</h3>
+                <p id="user-title" style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">ডাইরি নোট ইউজার</p>
+                
+                <div style="background: var(--primary); color: white; padding: 12px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; align-items: center; justify-content: center;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        ✉️ <span id="user-email">email@gmail.com</span>
+                    </div>
+                </div>
+                
+                <div style="padding: 15px; display: flex; gap: 10px; justify-content: center; background: var(--th-bg);">
+                    <button onclick="if(window.syncToFirebase) window.syncToFirebase()" style="flex: 1; background: var(--success); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 12px; box-shadow: 0 4px 6px rgba(6, 214, 160, 0.2);">🔄 সিঙ্ক করুন</button>
+                    <button onclick="if(window.logoutGoogle) window.logoutGoogle()" style="flex: 1; background: var(--danger); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 12px; box-shadow: 0 4px 6px rgba(239, 35, 60, 0.2);">লগআউট</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="db-card card-panel" style="margin: 0 0 15px 0; border: 1px solid rgba(239, 35, 60, 0.3);">
+            <div style="padding: 12px 15px; font-size: 13px; font-weight: bold; border-bottom: 1px solid var(--border-color); color: var(--danger); display: flex; align-items: center; gap: 6px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                সকল ডেটা রিসেট
+            </div>
+            <div style="padding: 15px; display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">আপনার সকল রুটিন ও হিস্ট্রি মুছতে চান? <br><b style="color:var(--danger)">এই কাজ বাতিল করা যাবে না!</b></span>
+                <button onclick="clearAllAppInfo()" style="background: rgba(239, 35, 60, 0.1); color: var(--danger); border: 1px solid var(--danger); padding: 8px 12px; border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer; transition: 0.2s;">
+                    ক্লিয়ার ডেটা
+                </button>
             </div>
         </div>
 
@@ -585,7 +622,7 @@
     let charts = {};
 
     let currentTheme = localStorage.getItem('theme_v2') || 'light';
-    
+
     // নতুন সেটিং: দিনের শুরুর ঘন্টা
     let dayStartHour = parseInt(localStorage.getItem('day_start_hour_v2'));
     if (isNaN(dayStartHour)) dayStartHour = 4; // ডিফল্ট ভোর ৪টা
@@ -684,7 +721,7 @@
     function renderCats() { 
         let s = document.getElementById('task-cat'); 
         s.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join(''); 
-        
+
         let hc = document.getElementById('history-cat');
         if(hc) {
             hc.innerHTML = `<option value="">সব ক্যাটাগরি</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
@@ -937,6 +974,25 @@
         document.getElementById('modal-form').style.display='flex';
     }
 
+    // ক্লিয়ার ডেটা ফাংশন
+    function clearAllAppInfo() {
+        let conf1 = confirm("আপনি কি নিশ্চিত? অ্যাপের সমস্ত রেকর্ড মুছে যাবে!");
+        if (conf1) {
+            let conf2 = confirm("ডেটা একবার মুছে ফেললে আর ফেরত পাওয়া যাবে না। আপনি কি সত্যিই মুছতে চান?");
+            if (conf2) {
+                db = []; // ডেটাবেস ফাকা করে দেওয়া হলো
+                localStorage.removeItem('smart_routine_v2'); // লোকাল স্টোরেজ ক্লিয়ার
+                
+                // যদি গুগল একাউন্ট লগইন থাকে, তবে ক্লাউডের ডেটাও ফাঁকা করে দেওয়া হবে
+                if(window.syncToFirebase) window.syncToFirebase(); 
+                
+                showToast("সমস্ত ডেটা সফলভাবে মুছে ফেলা হয়েছে!");
+                render(); 
+                if(typeof renderHistory === 'function') renderHistory();
+            }
+        }
+    }
+
     function render() {
         const logicalToday = getLogicalDate();
         const tbody = document.getElementById('list-daily'); tbody.innerHTML = "";
@@ -1178,10 +1234,10 @@
         }
 
         document.getElementById('rh-total').innerText = fmtD(monthlyGrandTotal);
-        
+
         let avgMins = activeDays > 0 ? Math.round(monthlyGrandTotal / activeDays) : 0;
         document.getElementById('rh-avg').innerText = fmtD(avgMins);
-        
+
         let topCatText = '-';
         if (monthlyGrandTotal > 0) {
             let sortedMonthlyCats = Object.keys(monthlyCatTotals).sort((a,b) => monthlyCatTotals[b] - monthlyCatTotals[a]);
@@ -1329,7 +1385,7 @@
         let dateFilter = document.getElementById('history-date').value;
         let catFilter = document.getElementById('history-cat').value;
         let searchQ = document.getElementById('history-search').value.toLowerCase().trim();
-        
+
         // সার্চ এবং ফিল্টার অনুযায়ী ডাটা আলাদা করা
         let filteredTasks = db.filter(t => {
             let matchDate = dateFilter ? (t.date === dateFilter) : true;
@@ -1355,7 +1411,7 @@
         filteredTasks.forEach(t => {
             totalMins += t.mins;
             catTotals[t.cat] = (catTotals[t.cat] || 0) + t.mins;
-            
+
             let dParts = t.date.split('-');
             let shortDate = `${toBn(dParts[2])}/${toBn(dParts[1])}/${toBn(dParts[0])}`;
 
@@ -1443,13 +1499,13 @@
         let dateFilter = document.getElementById('history-date').value;
         let catFilter = document.getElementById('history-cat').value;
         let searchQ = document.getElementById('history-search').value.toLowerCase().trim();
-        
+
         let tbody = document.getElementById('list-history');
         let summaryBox = document.getElementById('history-summary-box');
         let summaryTbody = document.getElementById('list-history-summary');
 
         tbody.innerHTML = ""; 
-        
+
         // ফিল্টার লজিক
         let filteredTasks = db.filter(t => {
             let matchDate = dateFilter ? (t.date === dateFilter) : true;
@@ -1470,11 +1526,11 @@
         filteredTasks.forEach((t) => {
             catTotals[t.cat] = (catTotals[t.cat] || 0) + t.mins;
             historyCount++;
-            
+
             // তারিখ বাংলা ফরম্যাটে দেখানোর জন্য
             let dParts = t.date.split('-');
             let shortDate = `${toBn(dParts[2])}/${toBn(dParts[1])}`; 
-            
+
             // এডিট/ডিলিটের জন্য অরিজিনাল ইনডেক্স খুঁজে বের করা
             let originalIndex = db.indexOf(t);
 
@@ -1513,7 +1569,7 @@
 
         // হিস্ট্রি ট্যাবে গেলে সব ডাটা যেন প্রথমে দেখায় তার জন্য এটি ফাঁকা রাখা হলো
         document.getElementById('history-date').value = "";
-        
+
         renderCats(); render();
     };
 </script>
@@ -1558,15 +1614,17 @@
   };
 
   onAuthStateChanged(auth, async (user) => {
-    const loginBtn = document.getElementById('login-btn');
     if (user) {
       window.currentUser = user;
 
-      if(loginBtn) {
-        loginBtn.innerHTML = `<img src="${user.photoURL}" style="width:16px; height:16px; border-radius:50%; vertical-align:middle; margin-right:5px;"> লগআউট`;
-        loginBtn.onclick = window.logoutGoogle;
-        loginBtn.style.background = "var(--danger)";
-      }
+      // লগইন/লগআউট UI কন্ট্রোল
+      document.getElementById('profile-logged-out').style.display = 'none';
+      document.getElementById('profile-logged-in').style.display = 'block';
+      
+      // ইউজারের তথ্য প্রোফাইলে বসানো
+      document.getElementById('user-avatar').src = user.photoURL || 'https://via.placeholder.com/85';
+      document.getElementById('user-name').innerText = user.displayName || 'সম্মানিত ইউজার';
+      document.getElementById('user-email').innerText = user.email || 'ইমেইল পাওয়া যায়নি';
 
       showToast("ডেটা লোড হচ্ছে...");
 
@@ -1578,21 +1636,21 @@
           let data = docSnap.data();
           db = data.routineData || [];
           cats = data.categories || ["ইবাদত", "ঘুম", "পড়াশোনা", "খাবার", "কাজ"];
-          
+
           if (data.dayStartHour !== undefined) {
               dayStartHour = data.dayStartHour;
               localStorage.setItem('day_start_hour_v2', dayStartHour);
               if (document.getElementById('day-start-select')) {
                   document.getElementById('day-start-select').value = dayStartHour;
               }
-              updateDayStartText();
+              if(typeof updateDayStartText === 'function') updateDayStartText();
           }
 
           localStorage.setItem('smart_routine_v2', JSON.stringify(db));
           localStorage.setItem('cats_v2', JSON.stringify(cats));
 
           render();
-          renderCats();
+          if(typeof renderCats === 'function') renderCats();
           if(typeof renderHistory === 'function') renderHistory();
           showToast("ক্লাউড থেকে ডেটা রিস্টোর হয়েছে!");
         } else {
@@ -1603,11 +1661,10 @@
       }
     } else {
       window.currentUser = null;
-      if(loginBtn) {
-        loginBtn.innerHTML = `গুগল লগইন`;
-        loginBtn.onclick = window.loginWithGoogle;
-        loginBtn.style.background = "#4285F4";
-      }
+      
+      // লগইন/লগআউট UI কন্ট্রোল
+      document.getElementById('profile-logged-out').style.display = 'block';
+      document.getElementById('profile-logged-in').style.display = 'none';
     }
   });
 
